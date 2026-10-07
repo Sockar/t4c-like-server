@@ -30,7 +30,7 @@ Each connection may send:
 
 | Type | Payload | Behavior |
 | --- | --- | --- |
-| `character.create` | `{"name":"Aster","attributes":{"might":5,"reflex":5,"insight":5,"resolve":5}}` | Creates and logs in a character. Names are 3-16 ASCII letters, digits, or underscores. Each attribute is 1-10 and the four values must total 20. |
+| `character.create` | `{"name":"Aster","attributes":{"power":5,"agility":5,"endurance":5,"insight":5}}` | Creates and logs in a character. Names are 3-16 ASCII letters, digits, or underscores. Each attribute is 1-10 and the four values must total 20. |
 | `auth.login` | `{"name":"Aster"}` | Loads an existing character. This is a name-only development stub, not real authentication. |
 | `position.update` | `{"x":12.5,"y":-4}` | Saves the logged-in character's position; each coordinate must be finite and between -100000 and 100000. |
 | `chat.send` | `{"message":"Hello!"}` | Broadcasts a non-empty message of at most 500 UTF-8 bytes to logged-in clients. |

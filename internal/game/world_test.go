@@ -36,7 +36,7 @@ func TestWorldCreateMoveAndBroadcastChat(t *testing.T) {
 		Type:   "character.create",
 		Payload: json.RawMessage(`{
 			"name":"Aster",
-			"attributes":{"might":5,"reflex":5,"insight":5,"resolve":5}
+			"attributes":{"power":5,"agility":5,"endurance":5,"insight":5}
 		}`),
 	})
 	if got := client.messages[len(client.messages)-1].Type; got != "character.created" {

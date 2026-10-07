@@ -315,7 +315,7 @@ func validName(name string) bool {
 }
 
 func validAttributes(attributes persistence.Attributes) bool {
-	values := []int{attributes.Might, attributes.Reflex, attributes.Insight, attributes.Resolve}
+	values := []int{attributes.Power, attributes.Agility, attributes.Endurance, attributes.Insight}
 	total := 0
 	for _, value := range values {
 		if value < 1 || value > 10 {

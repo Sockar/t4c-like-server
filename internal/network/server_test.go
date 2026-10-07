@@ -59,7 +59,7 @@ func TestWebSocketCharacterCreationAndPositionUpdate(t *testing.T) {
 		Payload: map[string]any{
 			"name": "Aster",
 			"attributes": map[string]int{
-				"might": 5, "reflex": 5, "insight": 5, "resolve": 5,
+				"power": 5, "agility": 5, "endurance": 5, "insight": 5,
 			},
 		},
 	}); err != nil {

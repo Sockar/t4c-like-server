@@ -59,7 +59,7 @@ func TestWebSocketCharacterCreationAndPositionUpdate(t *testing.T) {
 		Payload: map[string]any{
 			"name": "Aster",
 			"attributes": map[string]int{
-				"might": 5, "reflex": 5, "insight": 5, "resolve": 5,
+				"power": 5, "agility": 5, "endurance": 5, "insight": 5,
 			},
 		},
 	}); err != nil {
@@ -72,9 +72,28 @@ func TestWebSocketCharacterCreationAndPositionUpdate(t *testing.T) {
 	if response.Type != "character.created" {
 		t.Fatalf("got response %q, want character.created", response.Type)
 	}
+	if err := connection.ReadJSON(&response); err != nil {
+		t.Fatal(err)
+	}
+	if response.Type != "world.snapshot" {
+		t.Fatalf("got response %q, want world.snapshot", response.Type)
+	}
+	var snapshot struct {
+		Zone struct {
+			ID string `json:"id"`
+		} `json:"zone"`
+		NPCs     []json.RawMessage `json:"npcs"`
+		Monsters []json.RawMessage `json:"monsters"`
+	}
+	if err := json.Unmarshal(response.Payload, &snapshot); err != nil {
+		t.Fatal(err)
+	}
+	if snapshot.Zone.ID != "mosswake_fen" || len(snapshot.NPCs) != 2 || len(snapshot.Monsters) != 3 {
+		t.Fatalf("unexpected initial world snapshot: %+v", snapshot)
+	}
 
 	if err := connection.WriteJSON(protocol.Message{
-		Type: "position.update", Payload: map[string]float64{"x": 42, "y": -6},
+		Type: "position.update", Payload: map[string]float64{"x": 42, "y": 60},
 	}); err != nil {
 		t.Fatal(err)
 	}
@@ -96,12 +115,12 @@ func TestWebSocketCharacterCreationAndPositionUpdate(t *testing.T) {
 			t.Fatal(err)
 		}
 		for _, player := range delta.Players {
-			if player.Name == "Aster" && player.X == 42 && player.Y == -6 {
+			if player.Name == "Aster" && player.X == 42 && player.Y == 60 {
 				saved, err := store.LoadCharacter(context.Background(), "Aster")
 				if err != nil {
 					t.Fatal(err)
 				}
-				if saved.X != 42 || saved.Y != -6 {
+				if saved.X != 42 || saved.Y != 60 {
 					t.Fatalf("position was not persisted: (%v, %v)", saved.X, saved.Y)
 				}
 				return
